@@ -1,10 +1,11 @@
 package com.app.controllers.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -19,13 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.common.factory.ResourceFactory;
 import com.app.common.factory.ScreenerFactory;
+import com.app.common.utils.QueryUtils;
 import com.app.domain.Screener;
 import com.app.domain.ScreenerColumn;
 import com.app.domain.ScreenerFilter;
+import com.app.repository.ScreenerDao;
 import com.app.service.ResourceFilter;
+import com.google.common.collect.ImmutableMap;
+
 
 @RestController
 public abstract class AbstractScreenerController implements ResourceFilter {
+	
+	@Autowired
+	private ScreenerDao screenerDao;
 
 	protected static final String DELIMITTER = "/";
 	protected static final String FILTER_PATH_VARIABLE = "filter-name";
@@ -51,8 +59,8 @@ public abstract class AbstractScreenerController implements ResourceFilter {
 	}
 
 	private Resource<Screener> getMetaDataObject() {
-		List<Resource<ScreenerFilter>> screenerFilterList = ResourceFactory.createScreenerFilterList(screener, filterControllerClass);
-		List<Resource<ScreenerColumn>> screenerColumnList = ResourceFactory.createScreenerColumnList(screener);
+		List<Resource<ScreenerFilter>> screenerFilterList = ResourceFactory.createScreenerFilterList(screener, filterControllerClass, screenerDao);
+		List<Resource<ScreenerColumn>> screenerColumnList = ResourceFactory.createScreenerColumnList(screener, screenerDao);
 		Screener screener = new Screener();
 		screener.setColumns(new Resources<>(screenerColumnList));
 		screener.setFilters(new Resources<>(screenerFilterList));
@@ -64,7 +72,19 @@ public abstract class AbstractScreenerController implements ResourceFilter {
 	
 	@RequestMapping(value = FILTER_LINK, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getFilterOptions(@PathVariable(value = FILTER_PATH_VARIABLE) String filterName, @RequestParam(required = false) Map<String, String> filters) {
-		return new ArrayList<String>();
+		String query = validateFilterName(getFilterMap(), filterName);
+		return screenerDao.getFilterValues(QueryUtils.manipulateQueryString(query, filters), filters);
+	}
+	
+	protected Map<String, String> getFilterMap(){
+		return ImmutableMap.of();
+	}
+	
+	private String validateFilterName(Map<String, String> filterMap, String filterName) {
+		String query = filterMap.get(filterName);
+		if(StringUtils.isBlank(query))
+			throw new IllegalArgumentException(String.format("Invalid Filter Name [%s]", filterName));
+		return query;
 	}
 
 }

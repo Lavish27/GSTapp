@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
@@ -13,26 +12,19 @@ import com.app.domain.ScreenerColumn;
 import com.app.domain.ScreenerFilter;
 import com.app.repository.ScreenerDao;
 import com.app.service.ResourceFilter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+
 public class ResourceFactory {
-
-	@Autowired
-	private static ScreenerDao screenerDao;
 	
-	public static List<Resource<ScreenerColumn>> createScreenerColumnList( ScreenerFactory.Screener screener) {
+	public static List<Resource<ScreenerColumn>> createScreenerColumnList( ScreenerFactory.Screener screener, ScreenerDao screenerDao) {
 
-		/**Map<String, Object> queryParameters = new HashMap<>();
-		queryParameters.put(USER_ID, userId);
-		queryParameters.put("screenerName", screener.getScreener());
-		queryParameters.put("portalName", screener.getPortal());
-		queryParameters.put(IS_EXPORT, export);
-		**/
+		
+		List<ScreenerColumn> screenerColumns = screenerDao.getScreenerColumns(screener.getScreener());
 
-		List<ScreenerColumn> screenerColumns = screenerDao.getScreenerColumns(screener.getScreener(), screener.getPortal());
-
-		if (screenerColumns.isEmpty()) {
-			return new ArrayList<>();
+		if (screenerColumns == null || screenerColumns.isEmpty()) {
+			return ImmutableList.of();
 		}
 
 		List<Resource<ScreenerColumn>> screenerColumnList = Lists.newArrayList();
@@ -43,11 +35,11 @@ public class ResourceFactory {
 		return screenerColumnList;
 	}
 	
-	public static List<Resource<ScreenerFilter>> createScreenerFilterList( ScreenerFactory.Screener screener, Class<? extends ResourceFilter> proxyFilterClass) {
-		List<ScreenerFilter> screenerFilters = screenerDao.getScreenerFilters(screener.getScreener(), screener.getPortal());
+	public static List<Resource<ScreenerFilter>> createScreenerFilterList( ScreenerFactory.Screener screener, Class<? extends ResourceFilter> proxyFilterClass, ScreenerDao screenerDao) {
+		List<ScreenerFilter> screenerFilters = screenerDao.getScreenerFilters(screener.getScreener());
 		
-		if (screenerFilters.isEmpty()) {
-			return new ArrayList<>();
+		if (screenerFilters == null || screenerFilters.isEmpty()) {
+			return ImmutableList.of();
 		}
 
         List<Resource<ScreenerFilter>> screenerFilterList = new ArrayList<>();

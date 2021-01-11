@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class ControllerExceptionAdvice {
 
-	@ExceptionHandler({ NumberFormatException.class })
+	@ExceptionHandler({ NumberFormatException.class, IllegalArgumentException.class})
 	@ResponseBody
 	public ResponseEntity<Object> handleBadRequest(Exception exp) throws IOException {
 		
@@ -23,11 +23,11 @@ public class ControllerExceptionAdvice {
 	private ResponseEntity<Object> handleExceptionInternal(Exception exp, String expMessage, HttpStatus responseStatus) {
 
 		
-		Map<String, Object> response = new HashMap();
+		Map<String, Object> response = new HashMap<>();
 
 		response.put("error_details", expMessage);
 
-		return new ResponseEntity(response, responseStatus);
+		return new ResponseEntity<>(response, responseStatus);
 	
 }
 }

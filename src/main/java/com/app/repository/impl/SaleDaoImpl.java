@@ -14,6 +14,7 @@ import com.app.repository.SaleDao;
 import com.app.repository.parametermapper.SaleDataParameterMapper;
 import com.app.repository.rowmapper.SaleDataRowMapper;
 import com.app.repository.sql.Queries;
+import com.app.repository.sql.SaleScreenerQueries;
 
 @Repository
 public class SaleDaoImpl extends BaseDao implements SaleDao {
@@ -25,7 +26,7 @@ public class SaleDaoImpl extends BaseDao implements SaleDao {
 	public void submitSaleData(SaleBill saleBill) {
 		
 		Map params = saleDataParameterMapper.submitSaleData(saleBill);
-		getNamedParameterJdbcTemplate().update(Queries.submitSaleData,params);
+		getNamedParameterJdbcTemplate().update(SaleScreenerQueries.submitSaleData,params);
 	}
 
 	
@@ -33,7 +34,7 @@ public class SaleDaoImpl extends BaseDao implements SaleDao {
 		SqlParameterSource paramSource = new MapSqlParameterSource()
         		.addValue("invoiceNo", invoiceNo);
 		
-		return getNamedParameterJdbcTemplate().queryForObject(Queries.getSaleData, paramSource, new SaleDataRowMapper());
+		return getNamedParameterJdbcTemplate().queryForObject(SaleScreenerQueries.getSaleData, paramSource, new SaleDataRowMapper());
 		
 	}
 

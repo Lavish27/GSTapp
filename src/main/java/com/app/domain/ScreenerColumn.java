@@ -2,17 +2,18 @@ package com.app.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(Include.NON_EMPTY)
 public class ScreenerColumn {
 
 	private Long columnId;
+	
+	@JsonProperty("columnName")
 	private String name;
+	
 	private String columnMappingName;
-	private boolean isConfigurable;
-	private boolean isEnabled;
-	private String[] columnSettings;
-	private String groupName;
+	
 	public Long getColumnId() {
 		return columnId;
 	}
@@ -31,30 +32,5 @@ public class ScreenerColumn {
 	public void setColumnMappingName(String columnMappingName) {
 		this.columnMappingName = columnMappingName;
 	}
-	public boolean isConfigurable() {
-		return isConfigurable;
-	}
-	public void setConfigurable(boolean isConfigurable) {
-		this.isConfigurable = isConfigurable;
-	}
-	public boolean isEnabled() {
-		return isEnabled;
-	}
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
-	public String[] getColumnSettings() {
-		return columnSettings;
-	}
-	public void setColumnSettings(String[] columnSettings) {
-		this.columnSettings = columnSettings;
-	}
-	public String getGroupName() {
-		return groupName;
-	}
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-	
 	
 }

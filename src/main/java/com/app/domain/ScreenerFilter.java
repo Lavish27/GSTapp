@@ -10,9 +10,6 @@ public class ScreenerFilter {
 	private String filterName;
 	private String filterType;
 	private String filterOptionsUriSuffix;
-	private String[] screenerFilterKeys;
-	private boolean isConfigurable;
-	private boolean isEnabled;
 	
 	
 	public String getFilterName() {
@@ -24,16 +21,7 @@ public class ScreenerFilter {
 	public String getFilterOptionsUriSuffix() {
 		return filterOptionsUriSuffix;
 	}
-	public String[] getScreenerFilterKeys() {
-		return screenerFilterKeys;
-	}
-	public boolean getIsConfigurable() {
-		return isConfigurable;
-	}
-	public boolean isEnabled() {
-		return isEnabled;
-	}
-	public Long getFilterId() {
+	public long getFilterId() {
 		return filterId;
 	}
 	public void setFilterId(long filterId) {
@@ -48,16 +36,5 @@ public class ScreenerFilter {
 	public void setFilterOptionsUriSuffix(String filterOptionsUriSuffix) {
 		this.filterOptionsUriSuffix = filterOptionsUriSuffix;
 	}
-	public void setScreenerFilterKeys(String[] screenerFilterKeys) {
-		this.screenerFilterKeys = screenerFilterKeys;
-	}
-	public void setIsConfigurable(boolean isConfigurable) {
-		this.isConfigurable = isConfigurable;
-	}
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
 	
-	
-
 }
