@@ -1,8 +1,5 @@
 package com.app.domain;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,15 +13,191 @@ public class SaleBill {
 	private double g_rt;
 	private double s_wt;
 	private double g_wt;
-	private int hsn;
+	private String gHsn;
+	private String sHsn;
 	private double sgst;
 	private double cgst;
 	private double igst;
 	private String transportMode;
 	private String vehicleNo;
 	private String date;
+	private String phoneNo;
+	private String aadhar;
+	private String state;
+	private String stateCode;
+	private double sAmount;
+	private double gAmount;
+	private double subTotal;
+	private double sgstRate;
+	private double cgstRate;
+	private double igstRate;
+	private double totalGst;
+	private double grandTotal;
+	private double roundOff;
+	private String grandTotalWords;
 	
 	
+	
+	public double getRoundOff() {
+		return roundOff;
+	}
+
+
+	public void setRoundOff(double roundOff) {
+		this.roundOff = roundOff;
+	}
+
+
+	public String getGrandTotalWords() {
+		return grandTotalWords;
+	}
+
+
+	public void setGrandTotalWords(String grandTotalWords) {
+		this.grandTotalWords = grandTotalWords;
+	}
+
+
+	public String getgHsn() {
+		return gHsn;
+	}
+
+
+	public void setgHsn(String gHsn) {
+		this.gHsn = gHsn;
+	}
+
+
+	public String getsHsn() {
+		return sHsn;
+	}
+
+
+	public void setsHsn(String sHsn) {
+		this.sHsn = sHsn;
+	}
+
+
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+
+
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+
+	public String getAadhar() {
+		return aadhar;
+	}
+
+
+	public void setAadhar(String aadhar) {
+		this.aadhar = aadhar;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
+	public String getStateCode() {
+		return stateCode;
+	}
+
+
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+
+
+	public double getsAmount() {
+		return sAmount;
+	}
+
+
+	public void setsAmount(double sAmount) {
+		this.sAmount = sAmount;
+	}
+
+
+	public double getgAmount() {
+		return gAmount;
+	}
+
+
+	public void setgAmount(double gAmount) {
+		this.gAmount = gAmount;
+	}
+
+
+	public double getSubTotal() {
+		return subTotal;
+	}
+
+
+	public void setSubTotal(double subTotal) {
+		this.subTotal = subTotal;
+	}
+
+
+	public double getSgstRate() {
+		return sgstRate;
+	}
+
+
+	public void setSgstRate(double sgstRate) {
+		this.sgstRate = sgstRate;
+	}
+
+
+	public double getCgstRate() {
+		return cgstRate;
+	}
+
+
+	public void setCgstRate(double cgstRate) {
+		this.cgstRate = cgstRate;
+	}
+
+
+	public double getIgstRate() {
+		return igstRate;
+	}
+
+
+	public void setIgstRate(double igstRate) {
+		this.igstRate = igstRate;
+	}
+
+
+	public double getTotalGst() {
+		return totalGst;
+	}
+
+
+	public void setTotalGst(double totalGst) {
+		this.totalGst = totalGst;
+	}
+
+
+	public double getGrandTotal() {
+		return grandTotal;
+	}
+
+
+	public void setGrandTotal(double grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+
+
 	public int getInvoiceNo() {
 		return invoiceNo;
 	}
@@ -82,13 +255,6 @@ public class SaleBill {
 		this.g_wt = g_wt;
 	}
 	
-	public int getHsn() {
-		return hsn;
-	}
-	
-	public void setHsn(int hsn) {
-		this.hsn = hsn;
-	}
 	
 	public double getSgst() {
 		return sgst;
@@ -131,7 +297,7 @@ public class SaleBill {
 	}
 	
 	public String getDate() {
-		return date.substring(0, 10);
+		return this.date;
 	}
 	
 	

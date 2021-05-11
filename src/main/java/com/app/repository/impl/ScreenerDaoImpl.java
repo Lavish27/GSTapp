@@ -2,6 +2,7 @@ package com.app.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.app.common.utils.QueryUtils;
 import com.app.domain.ScreenerColumn;
 import com.app.domain.ScreenerFilter;
 import com.app.repository.BaseDao;
@@ -40,6 +42,11 @@ public class ScreenerDaoImpl extends BaseDao implements ScreenerDao {
 		return getNamedParameterJdbcTemplate().queryForList(query, new MapSqlParameterSource(filters), String.class);
 	}
 	
+	@Override
+	public List<Map<String, Object>> getScreenerData(String query, Map<String, Object> params) {
+		return getNamedParameterJdbcTemplate().query(query, new MapSqlParameterSource(params), new ScreenerDataRowMapper());
+	}
+	
 	
 	//////////ROW MAPPERS //////
 
@@ -63,6 +70,26 @@ public class ScreenerDaoImpl extends BaseDao implements ScreenerDao {
 			return filter;
 		}
 	}
+	
+	private static class ScreenerDataRowMapper implements RowMapper<Map<String, Object>> {
+		public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Map<String, Object> map = new HashMap<>();
+			map.put("invoice_number", rs.getLong("invoice_number"));
+			map.put("cust_name", rs.getString("cust_name"));
+			map.put("aadhar", rs.getString("aadhar"));
+			map.put("phone_number", rs.getString("phone_number"));
+			map.put("bill_date", QueryUtils.formatDate(rs.getString("bill_date")));
+			map.put("gold_wt", rs.getDouble("gold_wt"));
+			map.put("silver_wt", rs.getDouble("silver_wt"));
+			map.put("total_gst", rs.getDouble("total_gst"));
+			map.put("grand_total", rs.getDouble("grand_total"));
+			map.put("sub_total", rs.getDouble("sub_total"));
+			map.put("rnum", rs.getLong("rnum"));
+			return map;
+		}
+	}
+
+	
 
 	
 			

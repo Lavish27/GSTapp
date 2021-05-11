@@ -3,6 +3,7 @@ package com.app.controllers.rest;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,14 @@ public abstract class AbstractScreenerController implements ResourceFilter {
 	protected static final String FILTER_PATH_VARIABLE = "filter-name";
 	protected static final String METADATA_LINK = DELIMITTER+"metadata";
 	protected static final String FILTER_LINK = DELIMITTER+"filters"+DELIMITTER+"{"+FILTER_PATH_VARIABLE+"}";
+	private static final Long FILTER_MAX_SIZE = 50L;
 
 	private ScreenerFactory.Screener screener;
-	private Set<String> expectedFilterParams;
 	private Class<? extends ResourceFilter> filterControllerClass;
 	private AbstractScreenerController childControllerproxy;
 
-	protected AbstractScreenerController(ScreenerFactory.Screener screener, Set<String> filterexpectedparams) {
+	protected AbstractScreenerController(ScreenerFactory.Screener screener) {
 		this.screener = screener;
-		this.expectedFilterParams = filterexpectedparams;
 		this.filterControllerClass = this.getClass();
 		this.childControllerproxy = ControllerLinkBuilder.methodOn(this.getClass());
 	}
@@ -73,12 +73,19 @@ public abstract class AbstractScreenerController implements ResourceFilter {
 	@RequestMapping(value = FILTER_LINK, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getFilterOptions(@PathVariable(value = FILTER_PATH_VARIABLE) String filterName, @RequestParam(required = false) Map<String, String> filters) {
 		String query = validateFilterName(getFilterMap(), filterName);
-		return screenerDao.getFilterValues(QueryUtils.manipulateQueryString(query, filters), filters);
+		return screenerDao.getFilterValues(QueryUtils.manipulateQueryString(query, filters.keySet()), filters).stream().limit(FILTER_MAX_SIZE).collect(Collectors.toList());
 	}
 	
 	protected Map<String, String> getFilterMap(){
 		return ImmutableMap.of();
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Map<String, Object>> getScreenerData(@RequestParam(required=false) Map<String, String> filters){
+		return getScreener(filters);
+	}
+	
+	protected abstract List<Map<String, Object>> getScreener(Map<String, String> filters);
 	
 	private String validateFilterName(Map<String, String> filterMap, String filterName) {
 		String query = filterMap.get(filterName);

@@ -4,7 +4,7 @@ import com.app.domain.SaleBill;
 
 public interface SaleDao {
 	
-	void submitSaleData(SaleBill saleBil);
+	Long submitSaleData(SaleBill saleBil);
 	
 	void updateStock(SaleBill saleBill);
 	

@@ -23,7 +23,7 @@ public class SaleDataRowMapper implements RowMapper<SaleBill> {
 		saleBill.setG_rt(rs.getDouble("g_rt"));
 		saleBill.setS_wt(rs.getDouble("s_wt"));
 		saleBill.setG_wt(rs.getDouble("g_wt"));
-		saleBill.setHsn(rs.getInt("hsn"));
+		//saleBill.setHsn(rs.getInt("hsn"));
 		saleBill.setSgst(rs.getDouble("sgst"));
 		saleBill.setCgst(rs.getDouble("cgst"));
 		saleBill.setIgst(rs.getDouble("igst"));

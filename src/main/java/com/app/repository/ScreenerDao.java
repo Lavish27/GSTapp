@@ -13,4 +13,6 @@ public interface ScreenerDao {
 	List<ScreenerFilter> getScreenerFilters(String screenerName);
 	
 	List<String> getFilterValues(String query, Map<String, String> filters);
+	
+	List<Map<String, Object>> getScreenerData(String query, Map<String, Object> params);
 }
